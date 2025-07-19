@@ -37,14 +37,6 @@ public class GradeService {
             return gradeRepository.save(grade);
         }).orElseThrow(() -> new RuntimeException("Grade not found with id: " + id));
     }
-
-    // Delete a grade by its ID
-    public void deleteGrade(Integer id) {
-        if (!gradeRepository.existsById(id)) {
-            throw new RuntimeException("Grade not found with id: " + id);
-        }
-        gradeRepository.deleteById(id);
-    }
     public Long getCountOfGrades(){
         return gradeRepository.count();
     }

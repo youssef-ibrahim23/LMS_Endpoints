@@ -43,12 +43,4 @@ public class ExamService {
             return examRepository.save(exam);
         }).orElseThrow(() -> new RuntimeException("Exam not found with id: " + id));
     }
-
-    // Delete an exam by its ID
-    public void deleteExam(Integer id) {
-        if (!examRepository.existsById(id)) {
-            throw new RuntimeException("Exam not found with id: " + id);
-        }
-        examRepository.deleteById(id);
-    }
 }

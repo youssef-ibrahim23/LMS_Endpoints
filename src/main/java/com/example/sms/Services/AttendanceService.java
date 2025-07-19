@@ -42,13 +42,6 @@ public class AttendanceService {
         }).orElseThrow(() -> new RuntimeException("Attendance not found with id: " + id));
     }
 
-    // Delete an attendance record by its ID
-    public void deleteAttendance(Integer id) {
-        if (!attendanceRepository.existsById(id)) {
-            throw new RuntimeException("Attendance not found with id: " + id);
-        }
-        attendanceRepository.deleteById(id);
-    }
 public List<Map<String, Object>> countOfAbsentAndAttendees(java.sql.Date fromDate, java.sql.Date toDate) {
     return attendanceRepository.countOfAbsentAndAttendees(fromDate, toDate);
 }

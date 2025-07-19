@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +26,7 @@ public class ExamController {
     private ExamService examService;
 
     // Create a new exam
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Exam> createExam(@RequestBody Exam exam) {
         return ResponseEntity.ok(examService.createExam(exam));
     }
@@ -41,21 +40,14 @@ public class ExamController {
     }
 
     // Get all exams
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<Exam>> getAllExams() {
         return ResponseEntity.ok(examService.getAllExams());
     }
 
     // Update an exam by ID
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Exam> updateExam(@PathVariable Integer id, @RequestBody Exam exam) {
         return ResponseEntity.ok(examService.updateExam(id, exam));
-    }
-
-    // Delete an exam by ID
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteExam(@PathVariable Integer id) {
-        examService.deleteExam(id);
-        return ResponseEntity.noContent().build();
     }
 }

@@ -1,10 +1,13 @@
 package com.example.sms.Controllers;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +30,21 @@ public class AccountController {
     private AccountService accountService;
 
     @PostMapping
-    public ResponseEntity<Account> createAccount(@RequestBody Account account) {
-        return ResponseEntity.ok(accountService.createAccount(account));
+public ResponseEntity<?> createAccountByNationalId(@RequestBody Map<String, String> request) {
+    try {
+        Account account = accountService.createAccountByNationalId(
+            request.get("nationalId"),
+            request.get("email"),
+            request.get("password")
+        );
+        return ResponseEntity.ok(account);
+    } catch (RuntimeException e) {
+        return ResponseEntity.badRequest().body(Map.of(
+            "error", e.getMessage(),
+            "timestamp", LocalDateTime.now()
+        ));
     }
+}
 
     @GetMapping("/{id}")
     public ResponseEntity<Account> getAccountById(@PathVariable Integer id) {
@@ -56,15 +71,25 @@ public class AccountController {
         return ResponseEntity.ok("Account is deactivated");
     }
 
-    @PostMapping("/login")
-public Optional<Account> login(@RequestBody Map<String, String> data) {
+@PostMapping("/login")
+public ResponseEntity<?> login(@RequestBody Map<String, String> data) {
     String email = data.get("email");
     String password = data.get("password");
-    return accountService.login(email, password);
+    
+    Optional<Account> account = accountService.login(email, password);
+    
+    if (account.isPresent()) {
+        return ResponseEntity.ok(account.get());
+    } else {
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Invalid credentials or account not found");
+        response.put("status", "error");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
 }
 
     @GetMapping("/count")
-    public Long getCount(){
+    public Long getCount() {
         return accountService.getCountOfAccounts();
     }
 }

@@ -9,18 +9,19 @@ import org.springframework.data.repository.query.Param;
 import com.example.sms.Models.Account;
 
 public interface AccountRepository extends JpaRepository<Account, Integer> {
-  @Query(value = """
-      SELECT a.*
-      FROM accounts a
-      JOIN users u ON a.user_id = u.user_id
-      JOIN roles r ON u.role_id = r.role_id
-      WHERE a.email = :email
-        AND a.status = 'active'
-        AND u.is_deleted = false
-        AND a.password = :password
-      """, nativeQuery = true)
-  Optional<Account> checkIfUserExistsAndTheirRoleAndStatus(@Param("email") String email,
-      @Param("password") String password);
+@Query("""
+    SELECT a 
+    FROM Account a
+    JOIN FETCH a.user u
+    JOIN FETCH u.role r
+    WHERE a.email = :email
+    AND lower(a.status) = 'active'
+    AND u.isDeleted = false
+    AND a.password = :password
+    """)
+Optional<Account> findActiveAccountByCredentials(
+    @Param("email") String email,
+    @Param("password") String password);
 
   boolean existsByUserId(Integer userId);
   @Query(value="""

@@ -41,11 +41,4 @@ public class DegreeService {
         }).orElseThrow(() -> new RuntimeException("Degree not found with id: " + id));
     }
 
-    // Delete a degree record by its ID
-    public void deleteDegree(Integer id) {
-        if (!degreeRepository.existsById(id)) {
-            throw new RuntimeException("Degree not found with id: " + id);
-        }
-        degreeRepository.deleteById(id);
-    }
 }

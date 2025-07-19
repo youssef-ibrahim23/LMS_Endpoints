@@ -43,13 +43,6 @@ public class ParentService {
         }).orElseThrow(() -> new RuntimeException("Parent not found with id: " + id));
     }
 
-    // Delete a parent by its ID
-    public void deleteParent(Integer id) {
-        if (!parentRepository.existsById(id)) {
-            throw new RuntimeException("Parent not found with id: " + id);
-        }
-        parentRepository.deleteById(id);
-    }
     public Long countOfParents(){
         return parentRepository.count();
     }

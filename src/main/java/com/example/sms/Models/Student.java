@@ -1,30 +1,36 @@
 package com.example.sms.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 @Entity
-@Table(name="students")
+@Table(name = "students")
 public class Student {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "student_id")
     private Integer studentId;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name="student_id")
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name="grade_id")
+    @JoinColumn(name = "grade_id", referencedColumnName = "grade_id")
     private Grade grade;
 
     @ManyToOne
-    @JoinColumn(name="class_id")
+    @JoinColumn(name = "class_id", referencedColumnName = "class_id")
     private Classroom classroom;
+
+    public Student(Integer studentId) {
+        this.studentId = studentId;
+    }
+
+    public Student() {
+    }
+
+    // Getters and setters
 
     public Integer getStudentId() {
         return studentId;
@@ -57,5 +63,4 @@ public class Student {
     public void setClassroom(Classroom classroom) {
         this.classroom = classroom;
     }
-    
 }

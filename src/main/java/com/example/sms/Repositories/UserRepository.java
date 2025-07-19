@@ -63,4 +63,15 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             WHERE user_id = :id
                 """, nativeQuery = true)
     int deleteUser(@Param("id") int id);
+
+        @Query(value = "SELECT u.* FROM users u WHERE u.is_deleted = false AND u.user_id NOT IN (SELECT user_id FROM accounts)", nativeQuery = true)
+    List<User> findUsersWithNoAccounts();
+    @Query(value= """
+SELECT u.* 
+FROM users u
+WHERE NOT EXISTS (SELECT 1 FROM students s WHERE s.user_id = u.user_id)
+AND u.is_deleted = false
+AND u.role_id = 3
+            """, nativeQuery=true)
+            List<User> findNonStudents();
 }

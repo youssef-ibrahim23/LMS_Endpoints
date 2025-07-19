@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,12 +51,6 @@ public class ClassroomController {
         return ResponseEntity.ok(classroomService.updateClassroom(id, classroom));
     }
 
-    // Delete a classroom by ID
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteClassroom(@PathVariable Integer id) {
-        classroomService.deleteClassroom(id);
-        return ResponseEntity.noContent().build();
-    }
     @GetMapping("/count")
     public Long getCount(){
         return classroomService.getCountOfClasses();

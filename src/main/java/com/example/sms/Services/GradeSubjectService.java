@@ -1,8 +1,8 @@
 package com.example.sms.Services;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,13 +41,6 @@ public class GradeSubjectService {
         }).orElseThrow(() -> new RuntimeException("GradeSubject not found with id: " + id));
     }
 
-    // Delete a grade-subject record by ID
-    public void deleteGradeSubject(Integer id) {
-        if (!gradeSubjectRepository.existsById(id)) {
-            throw new RuntimeException("GradeSubject not found with id: " + id);
-        }
-        gradeSubjectRepository.deleteById(id);
-    }
     public List<Map<String, Long>> getCountOfTeachers(){
         return gradeSubjectRepository.getCountOfTeachersForEachSubject();
     }

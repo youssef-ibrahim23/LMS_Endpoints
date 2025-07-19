@@ -99,4 +99,12 @@ public class UserController {
         }
     }
 
+    @GetMapping("/no-accounts")
+    public ResponseEntity<List<User>> getUsersWithoutAccounts() {
+        return ResponseEntity.ok(userService.getUsersWithoutAccounts());
+    }
+    @GetMapping("/non-students")
+    public ResponseEntity<List<User>> findNonStudents(){
+        return ResponseEntity.ok(userService.getNonStudent());
+    }
 }

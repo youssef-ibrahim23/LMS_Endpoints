@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,5 +37,9 @@ public class RoleController {
     @PostMapping
     public Role addRole(@RequestBody Role role){
         return roleService.addRole(role);
+    }
+    @PutMapping("/{id}")
+    public Role editRole(@PathVariable Integer id, @RequestBody String name){
+        return roleService.editRole(id, name);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.sms.Models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,6 +11,7 @@ import jakarta.persistence.Table;
 public class Grade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="grade_id")
     private Integer gradeId;
 
     private String gradeName;

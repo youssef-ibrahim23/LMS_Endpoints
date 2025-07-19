@@ -1,27 +1,49 @@
 package com.example.sms.Services;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.sql.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.sms.Models.Account;
+import com.example.sms.Models.User;
 import com.example.sms.Repositories.AccountRepository;
+import com.example.sms.Repositories.UserRepository;
 
 @Service
 public class AccountService {
 
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    // Create a new account
-    public Account createAccount(Account account) {
+     @Transactional
+    public Account createAccountByNationalId(String nationalId, String email, String password) {
+        // 1. Find user (this attaches user to persistence context)
+        User user = userRepository.findByNationalId(nationalId)
+                .orElseThrow(() -> new RuntimeException("User not found with national ID: " + nationalId));
+
+        // 2. Verify account doesn't exist
+        if (accountRepository.existsById(user.getUserId())) {
+            throw new RuntimeException("Account already exists for this user");
+        }
+
+        // 3. Create and link account
+        Account account = new Account();
+        account.setUser(user);  // This sets both the relationship and the ID via @MapsId
+        account.setEmail(email);
+        account.setPassword(password); // Always encode passwords!
+        account.setStatus("Active");
+        account.setCreatedAt(Date.valueOf(LocalDate.now()));
+        account.setLastReset(Date.valueOf(LocalDate.now()));
+
         return accountRepository.save(account);
     }
-
     // Retrieve an account by user ID
     public Optional<Account> getAccountById(Integer userId) {
         return accountRepository.findById(userId);
@@ -51,9 +73,10 @@ public class AccountService {
     }
 
     public Optional<Account> login(String email, String password) {
-        return accountRepository.checkIfUserExistsAndTheirRoleAndStatus(email, password);
+        return accountRepository.findActiveAccountByCredentials(email, password);
     }
-    public Long getCountOfAccounts(){
+
+    public Long getCountOfAccounts() {
         return accountRepository.count();
     }
 }

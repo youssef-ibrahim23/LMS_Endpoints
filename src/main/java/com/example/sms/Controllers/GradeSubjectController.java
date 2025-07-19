@@ -51,13 +51,6 @@ public class GradeSubjectController {
     public ResponseEntity<GradeSubject> updateGradeSubject(@PathVariable Integer id, @RequestBody GradeSubject gradeSubject) {
         return ResponseEntity.ok(gradeSubjectService.updateGradeSubject(id, gradeSubject));
     }
-
-    // Delete a grade-subject by ID
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteGradeSubject(@PathVariable Integer id) {
-        gradeSubjectService.deleteGradeSubject(id);
-        return ResponseEntity.noContent().build();
-    }
     @GetMapping("/teachers_count")
     public List<Map<String, Long>> teachersCount(){
         return gradeSubjectService.getCountOfTeachers();

@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.sms.DTO.AttendanceSummaryDTO;
 import com.example.sms.Models.Attendance;
 import com.example.sms.Models.StudentAttendance;
 import com.example.sms.Models.User;
@@ -65,5 +67,8 @@ public class StudentAttendanceController {
         service.addStudentAttendances(attendances);
         return ResponseEntity.ok("Attendance records saved successfully");
     }
-
+    @GetMapping("/attendance_summary/{student_id}")
+    public AttendanceSummaryDTO attendanceSummary(@PathVariable Integer student_id){
+        return service.attendanceSummary(student_id);
+    }
 }

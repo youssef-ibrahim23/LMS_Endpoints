@@ -95,5 +95,11 @@ public class UserService {
     }
     return false;
 }
+    public List<User> getUsersWithoutAccounts() {
+        return userRepository.findUsersWithNoAccounts();
+    }
+    public List<User> getNonStudent(){
+        return userRepository.findNonStudents();
+    }
 
 }

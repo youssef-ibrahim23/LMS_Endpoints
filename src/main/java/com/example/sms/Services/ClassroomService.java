@@ -38,13 +38,6 @@ public class ClassroomService {
         }).orElseThrow(() -> new RuntimeException("Classroom not found with id: " + id));
     }
 
-    // Delete a classroom by its ID
-    public void deleteClassroom(Integer id) {
-        if (!classroomRepository.existsById(id)) {
-            throw new RuntimeException("Classroom not found with id: " + id);
-        }
-        classroomRepository.deleteById(id);
-    }
     public Long getCountOfClasses(){
         return classroomRepository.count();
     }
