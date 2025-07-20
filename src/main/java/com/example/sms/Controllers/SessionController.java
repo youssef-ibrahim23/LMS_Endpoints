@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -40,7 +41,6 @@ public class SessionController {
 
     @PostMapping
     public ResponseEntity<String> createSession(@RequestBody Session session) {
-        // Fetch full GradeSubject if present
         if (session.getGradeSubject() != null && session.getGradeSubject().getGradeSubjectId() != null) {
             Integer gsId = session.getGradeSubject().getGradeSubjectId();
             GradeSubject fullGS = gradeSubjectRepository.findById(gsId).orElse(null);
@@ -49,5 +49,21 @@ public class SessionController {
 
         sessionService.saveSession(session);
         return ResponseEntity.ok("Session saved successfully.");
+    }
+
+    @PutMapping("/{id}")
+    public  ResponseEntity<String> updateSession( @PathVariable int id , @RequestBody Session session){
+        if (session.getGradeSubject() != null && session.getGradeSubject().getGradeSubjectId() != null) {
+            Integer gsId = session.getGradeSubject().getGradeSubjectId();
+            GradeSubject fullGS = gradeSubjectRepository.findById(gsId).orElse(null);
+            session.setGradeSubject(fullGS);
+        }
+
+        session.setSessionId(id);
+        sessionService.saveSession(session);
+
+           return ResponseEntity.ok("Session saved successfully.");
+
+
     }
 }

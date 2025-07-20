@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.sms.DTO.AccountCreationRequest;
+import com.example.sms.DTO.LoginRequest;
 import com.example.sms.Models.Account;
 import com.example.sms.Services.AccountService;
 
@@ -30,12 +32,12 @@ public class AccountController {
     private AccountService accountService;
 
     @PostMapping
-public ResponseEntity<?> createAccountByNationalId(@RequestBody Map<String, String> request) {
+public ResponseEntity<?> createAccountByNationalId(@RequestBody AccountCreationRequest request) {
     try {
         Account account = accountService.createAccountByNationalId(
-            request.get("nationalId"),
-            request.get("email"),
-            request.get("password")
+            request.getNationalId(),
+            request.getEmail(),
+            request.getPassword()
         );
         return ResponseEntity.ok(account);
     } catch (RuntimeException e) {
@@ -71,10 +73,16 @@ public ResponseEntity<?> createAccountByNationalId(@RequestBody Map<String, Stri
         return ResponseEntity.ok("Account is deactivated");
     }
 
+    @PutMapping("/activate/{id}")
+    public ResponseEntity<String> activeAccount(@PathVariable Integer id) {
+        accountService.activateAccount(id);
+        return ResponseEntity.ok("Account is deactivated");
+    }
+
 @PostMapping("/login")
-public ResponseEntity<?> login(@RequestBody Map<String, String> data) {
-    String email = data.get("email");
-    String password = data.get("password");
+public ResponseEntity<?> login(@RequestBody LoginRequest data) {
+    String email = data.getEmail();
+    String password = data.getPassword();
     
     Optional<Account> account = accountService.login(email, password);
     

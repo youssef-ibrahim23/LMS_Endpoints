@@ -63,6 +63,14 @@ public class AccountService {
         accountRepository.save(account); // save the updated account
     }
 
+    public void activateAccount(Integer userId) {
+        Account account = accountRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Account not found with userId: " + userId));
+
+        account.setStatus("Active");
+        accountRepository.save(account); // save the updated account
+    }
+
     public void changePassword(Integer user, String password) {
         Account account = accountRepository.findById(user)
                 .orElseThrow(() -> new RuntimeException("Account not found with userId: " + user));
