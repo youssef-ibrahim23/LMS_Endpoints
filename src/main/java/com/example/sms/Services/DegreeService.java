@@ -41,4 +41,12 @@ public class DegreeService {
         }).orElseThrow(() -> new RuntimeException("Degree not found with id: " + id));
     }
 
+    public List<Degree> findRecentDegreesByStudentId(int id){
+        return degreeRepository.findRecentDegreesByStudentId(id);
+    }
+
+    public List<Degree> findByStudentStudentId(int id){
+        return degreeRepository.findByStudentStudentId(id);
+    }
+
 }

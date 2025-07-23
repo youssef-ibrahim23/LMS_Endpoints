@@ -1,21 +1,10 @@
 package com.example.sms.Models;
 
-import java.time.LocalDate;
-import java.util.Base64;
+import java.sql.Date;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
-
-@Entity
+@Entity 
 @Table(name = "assignment_submissions")
 public class AssignmentSubmission {
 
@@ -25,28 +14,32 @@ public class AssignmentSubmission {
     private Integer submissionId;
 
     @ManyToOne
-    @JoinColumn(name = "assignment_id", referencedColumnName = "assignment_id")
+    @JoinColumn(name = "assignment_id", nullable = false)
     private Assignment assignment;
 
     @ManyToOne
-    @JoinColumn(name = "student_id", referencedColumnName = "student_id")
+    @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
-    @Column(name = "solution", columnDefinition = "BYTEA")
-    @JsonIgnore
+    @Column(name = "solution")
     private byte[] solution;
-    @Transient
-    private String solutionBase64;
-    @Column(name = "note", columnDefinition = "TEXT")
-    private String note;
-    private LocalDate submittedAt;
-    public LocalDate getSubmittedAt() {
-        return submittedAt;
-    }
 
-    public void setSubmittedAt(LocalDate submittedAt) {
-        this.submittedAt = submittedAt;
-    }
+    @Column(name = "note")
+    private String note;
+
+    @Column(name = "score")
+    private Integer score;
+
+    @Column(name = "feedback")
+    private String feedback;
+
+    @Column(name = "status", nullable = false)
+    private String status;
+
+    @Column(name = "submit_at")
+    private Date submitAt;
+
+    // Getters and Setters
 
     public Integer getSubmissionId() {
         return submissionId;
@@ -88,14 +81,37 @@ public class AssignmentSubmission {
         this.note = note;
     }
 
-    public String getSolutionBase64() {
-        if (solution != null) {
-            return Base64.getEncoder().encodeToString(solution);
-        }
-        return null;
+    public Integer getScore() {
+        return score;
     }
 
-    public void setSolutionBase64(String solutionBase64) {
-        this.solutionBase64 = solutionBase64;
+    public void setScore(Integer score) {
+        this.score = score;
     }
+
+    public String getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Date getSubmitAt() {
+        return submitAt;
+    }
+
+    public void setSubmitAt(Date submitAt) {
+        this.submitAt = submitAt;
+    }
+
+    
 }

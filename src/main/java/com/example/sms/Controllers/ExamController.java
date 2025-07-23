@@ -1,53 +1,112 @@
 package com.example.sms.Controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.sms.Models.Exam;
 import com.example.sms.Services.ExamService;
+import com.example.sms.Services.ResponseService;
 
 @RestController
 @CrossOrigin(origins = "*")
-
 @RequestMapping("/api/v1/exams")
 public class ExamController {
 
     @Autowired
     private ExamService examService;
 
-    // Create a new exam
     @PostMapping
-    public ResponseEntity<Exam> createExam(@RequestBody Exam exam) {
-        return ResponseEntity.ok(examService.createExam(exam));
+    public ResponseEntity<?> createExam(@RequestBody Exam exam) {
+        try {
+            if (exam == null) {
+                return ResponseEntity.badRequest()
+                    .body(ResponseService.createErrorResponse("Exam data is required"));
+            }
+            if (exam.getType() == null || exam.getType().isEmpty()) {
+                return ResponseEntity.badRequest()
+                    .body(ResponseService.createErrorResponse("Exam type is required"));
+            }
+            if (exam.getExamDate() == null) {
+                return ResponseEntity.badRequest()
+                    .body(ResponseService.createErrorResponse("Exam date is required"));
+            }
+
+            Exam createdExam = examService.createExam(exam);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ResponseService.createSuccessResponse("Exam created successfully", createdExam));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                .body(ResponseService.createErrorResponse(e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ResponseService.createErrorResponse("Failed to create exam: " + e.getMessage()));
+        }
     }
 
-    // Get an exam by ID
     @GetMapping("/{id}")
-    public ResponseEntity<Exam> getExamById(@PathVariable Integer id) {
-        return examService.getExamById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> getExamById(@PathVariable Integer id) {
+        try {
+            if (id == null || id <= 0) {
+                return ResponseEntity.badRequest()
+                    .body(ResponseService.createErrorResponse("Invalid exam ID"));
+            }
+
+            Optional<Exam> exam = examService.getExamById(id);
+            if (exam.isPresent()) {
+                return ResponseEntity.ok(exam.get());
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ResponseService.createErrorResponse("Exam not found with ID: " + id));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ResponseService.createErrorResponse("Failed to retrieve exam: " + e.getMessage()));
+        }
     }
 
-    // Get all exams
     @GetMapping
-    public ResponseEntity<List<Exam>> getAllExams() {
-        return ResponseEntity.ok(examService.getAllExams());
+    public ResponseEntity<?> getAllExams() {
+        try {
+            List<Exam> exams = examService.getAllExams();
+            if (exams.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(ResponseService.createSuccessResponse("No exams found", null));
+            }
+            return ResponseEntity.ok(exams);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ResponseService.createErrorResponse("Failed to retrieve exams: " + e.getMessage()));
+        }
     }
 
-    // Update an exam by ID
     @PutMapping("/{id}")
-    public ResponseEntity<Exam> updateExam(@PathVariable Integer id, @RequestBody Exam exam) {
-        return ResponseEntity.ok(examService.updateExam(id, exam));
+    public ResponseEntity<?> updateExam(@PathVariable Integer id, @RequestBody Exam exam) {
+        try {
+            if (id == null || id <= 0) {
+                return ResponseEntity.badRequest()
+                    .body(ResponseService.createErrorResponse("Invalid exam ID"));
+            }
+            if (exam == null) {
+                return ResponseEntity.badRequest()
+                    .body(ResponseService.createErrorResponse("Exam data is required"));
+            }
+
+            Exam updatedExam = examService.updateExam(id, exam);
+            return ResponseEntity.ok(ResponseService.createSuccessResponse("Exam updated successfully", updatedExam));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                .body(ResponseService.createErrorResponse(e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ResponseService.createErrorResponse("Failed to update exam: " + e.getMessage()));
+        }
     }
 }

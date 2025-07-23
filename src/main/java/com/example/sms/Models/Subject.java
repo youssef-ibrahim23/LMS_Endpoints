@@ -1,19 +1,33 @@
 package com.example.sms.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 @Entity
-@Table(name="subjects")
+@Table(name = "subjects")
 public class Subject {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "subject_id")
     private Integer subjectId;
 
+    @Column(name = "subject_name", nullable = false, unique = true)
     private String subjectName;
 
+    // Constructors
+    public Subject() {
+    }
+
+    public Subject(String subjectName) {
+        this.subjectName = subjectName;
+    }
+
+    public Subject(Integer subjectId, String subjectName) {
+        this.subjectId = subjectId;
+        this.subjectName = subjectName;
+    }
+
+    // Getters and Setters
     public Integer getSubjectId() {
         return subjectId;
     }
@@ -29,5 +43,13 @@ public class Subject {
     public void setSubjectName(String subjectName) {
         this.subjectName = subjectName;
     }
-    
+
+    // toString
+    @Override
+    public String toString() {
+        return "Subject{" +
+                "subjectId=" + subjectId +
+                ", subjectName='" + subjectName + '\'' +
+                '}';
+    }
 }

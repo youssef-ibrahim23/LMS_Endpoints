@@ -16,4 +16,15 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Integer>
                 """, nativeQuery = true)
     List<Assignment> getAssignmentsByStatus(@Param("status") String status);
 
+    @Query(value = """
+    SELECT a.*
+    FROM assignments a
+    JOIN grades_subjects gs ON a.grade_subject_id = gs.grade_subject_id
+    JOIN students s ON gs.grade_id = s.grade_id
+    WHERE s.student_id = :studentId
+      AND a.deadline < NOW()
+    """, nativeQuery = true)
+List<Assignment> findOverdueAssignmentsByStudentId(@Param("studentId") Integer studentId);
+
+
 }

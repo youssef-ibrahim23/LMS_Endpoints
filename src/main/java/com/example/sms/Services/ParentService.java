@@ -31,7 +31,7 @@ public class ParentService {
     }
 
     // Update an existing parent record
-    public String updateParent(Integer id, Parent updatedParent) {
+    public Parent updateParent(Integer id, Parent updatedParent) {
         return parentRepository.findById(id).map(parent -> {
             parent.setName(updatedParent.getName());
             parent.setEmail(updatedParent.getEmail());
@@ -39,7 +39,7 @@ public class ParentService {
             parent.setAddress(updatedParent.getAddress());
             parent.setGender(updatedParent.getGender());
             parentRepository.save(parent);
-            return "Parent is updated successfully";
+            return updatedParent;
         }).orElseThrow(() -> new RuntimeException("Parent not found with id: " + id));
     }
 

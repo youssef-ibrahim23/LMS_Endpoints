@@ -1,38 +1,37 @@
 package com.example.sms.Models;
 
+import jakarta.persistence.*;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 @Entity
-@Table(name="student_attendances")
+@Table(name = "student_attendances")
 public class StudentAttendance {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="student_attendance_id")
+    @Column(name = "student_attendance_id")
     private Integer studentAttendanceId;
 
     @ManyToOne
-    @JoinColumn(name="attendance_id")
+    @JoinColumn(name = "attendance_id", nullable = false)
     private Attendance attendance;
 
     @ManyToOne
-    @JoinColumn(name="student_id")
-    private User student;
+    @JoinColumn(name = "student_id", nullable = false)
+    private Student student;
 
+    @Column(name = "status", nullable = false)
     private String status;
 
+    @Column(name = "notes")
+    private String notes;
+
+    // Getters and Setters
     public Integer getStudentAttendanceId() {
         return studentAttendanceId;
     }
 
-    public void setStudentAttendanceId(Integer id) {
-        this.studentAttendanceId = id;
+    public void setStudentAttendanceId(Integer studentAttendanceId) {
+        this.studentAttendanceId = studentAttendanceId;
     }
 
     public Attendance getAttendance() {
@@ -43,11 +42,11 @@ public class StudentAttendance {
         this.attendance = attendance;
     }
 
-    public User getStudent() {
+    public Student getStudent() {
         return student;
     }
 
-    public void setStudent(User student) {
+    public void setStudent(Student student) {
         this.student = student;
     }
 
@@ -58,5 +57,12 @@ public class StudentAttendance {
     public void setStatus(String status) {
         this.status = status;
     }
-    
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 }

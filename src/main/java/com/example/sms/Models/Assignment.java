@@ -1,15 +1,7 @@
 package com.example.sms.Models;
 
-import java.time.LocalDateTime;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "assignments")
@@ -20,27 +12,29 @@ public class Assignment {
     @Column(name = "assignment_id")
     private Integer assignmentId;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Column(name = "subtitle")
+    private String subtitle;
+
+    @Column(name = "description")
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "grade_subject_id", referencedColumnName = "grade_subject_id")
+    @JoinColumn(name = "grade_subject_id", nullable = false)
     private GradeSubject gradeSubject;
 
-    @Column(name = "deadline")
-    private LocalDateTime deadline;
+    @Column(name = "deadline", nullable = false)
+    private Timestamp deadline;
 
-    @Column(name = "status")
-    private String status;
-    public Assignment(){}
-    public Assignment(Integer assignmentId) {
-        this.assignmentId = assignmentId;
-    }  // <--- Required by Jackson
+    @Column(name = "status", columnDefinition = "varchar(15) default 'Urgent'")
+    private String status = "Urgent";
 
-    // Getters and setters
+    @Column(name = "max_score")
+    private Integer maxScore;
+
+    // Getters and Setters
 
     public Integer getAssignmentId() {
         return assignmentId;
@@ -56,6 +50,14 @@ public class Assignment {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getSubtitle() {
+        return subtitle;
+    }
+
+    public void setSubtitle(String subtitle) {
+        this.subtitle = subtitle;
     }
 
     public String getDescription() {
@@ -74,11 +76,11 @@ public class Assignment {
         this.gradeSubject = gradeSubject;
     }
 
-    public LocalDateTime getDeadline() {
+    public Timestamp getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(LocalDateTime deadline) {
+    public void setDeadline(Timestamp deadline) {
         this.deadline = deadline;
     }
 
@@ -88,5 +90,13 @@ public class Assignment {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Integer getMaxScore() {
+        return maxScore;
+    }
+
+    public void setMaxScore(Integer maxScore) {
+        this.maxScore = maxScore;
     }
 }

@@ -5,8 +5,10 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import com.example.sms.Models.Assignment;
 import com.example.sms.Models.Attendance;
 import com.example.sms.Repositories.AttendanceRepository;
 
@@ -36,14 +38,24 @@ public class AttendanceService {
         return attendanceRepository.findById(id).map(attendance -> {
             attendance.setSession(updatedAttendance.getSession());
             attendance.setAttendDate(updatedAttendance.getAttendDate());
-            attendance.setAttendees(updatedAttendance.getAttendees());
-            attendance.setAbsence(updatedAttendance.getAbsence());
+            attendance.setPresents(updatedAttendance.getPresents());
+            attendance.setAbsences(updatedAttendance.getAbsences());
             return attendanceRepository.save(attendance);
         }).orElseThrow(() -> new RuntimeException("Attendance not found with id: " + id));
     }
 
 public List<Map<String, Object>> countOfAbsentAndAttendees(java.sql.Date fromDate, java.sql.Date toDate) {
     return attendanceRepository.countOfAbsentAndAttendees(fromDate, toDate);
+}
+
+public List<Map<String, Object>> getAttendancePercentageByStudentId(Integer studentId){
+    return attendanceRepository.getAttendancePercentageByStudentId(studentId);
+}
+
+public Map<String, Object> getAttendanceStatsByStudentId(Integer studentId){
+
+    return attendanceRepository.getAttendanceStatsByStudentId(studentId);
+
 }
 
 }

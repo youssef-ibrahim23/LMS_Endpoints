@@ -1,57 +1,70 @@
 package com.example.sms.Models;
 
+import jakarta.persistence.*;
 import java.sql.Date;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 @Entity
-@Table(name="attendances")
+@Table(name = "attendances")
 public class Attendance {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "attendance_id")
     private Integer attendanceId;
 
     @ManyToOne
-    @JoinColumn(name="session_id")
+    @JoinColumn(name = "session_id", nullable = false)
     private Session session;
 
+    @Column(name = "attend_date", columnDefinition = "date default CURRENT_DATE")
     private Date attendDate;
-    private Integer attendees;
-    private Integer absence;
+
+    @Column(name = "presents")
+    private Integer presents;
+    
+    @Column(name = "absences")
+    private Integer absences;
+
+    // Getters and Setters
     public Integer getAttendanceId() {
         return attendanceId;
     }
+
     public void setAttendanceId(Integer attendanceId) {
         this.attendanceId = attendanceId;
     }
+
     public Session getSession() {
         return session;
     }
+
     public void setSession(Session session) {
         this.session = session;
     }
+
     public Date getAttendDate() {
         return attendDate;
     }
+
     public void setAttendDate(Date attendDate) {
         this.attendDate = attendDate;
     }
-    public Integer getAttendees() {
-        return attendees;
+
+    public Integer getPresents() {
+        return presents;
     }
-    public void setAttendees(Integer attendees) {
-        this.attendees = attendees;
+
+    public void setPresents(Integer presents) {
+        this.presents = presents;
     }
-    public Integer getAbsence() {
-        return absence;
+
+    public Integer getAbsences() {
+        return absences;
     }
-    public void setAbsence(Integer absence) {
-        this.absence = absence;
+
+    public void setAbsences(Integer absences) {
+        this.absences = absences;
     }
+
     
 }

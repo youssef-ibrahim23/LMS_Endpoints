@@ -5,24 +5,26 @@ import org.springframework.stereotype.Service;
 
 import com.example.sms.DTO.LinkParentRequest;
 import com.example.sms.Models.Parent;
+import com.example.sms.Models.Student;
 import com.example.sms.Models.StudentParent;
 import com.example.sms.Models.User;
 import com.example.sms.Repositories.ParentRepository;
 import com.example.sms.Repositories.StudentParentRepository;
+import com.example.sms.Repositories.StudentRepository;
 import com.example.sms.Repositories.UserRepository;
 
 @Service
 public class StudentParentService {
     private final StudentParentRepository studentParentRepository;
-    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
     private final ParentService parentService;
 
     @Autowired
     public StudentParentService(ParentRepository parentRepository,
-            UserRepository userRepository,
+            StudentRepository studentRepository,
             StudentParentRepository studentParentRepository,
             ParentService parentService) {
-        this.userRepository = userRepository;
+        this.studentRepository = studentRepository;
         this.studentParentRepository = studentParentRepository;
         this.parentService = parentService;
     }
@@ -39,7 +41,7 @@ public class StudentParentService {
         Parent savedParent = parentService.addParent(parent);
 
         // Get student by ID
-        User student = userRepository.findById(request.getStudentId())
+        Student student = studentRepository.findById(request.getStudentId())
                 .orElseThrow(() -> new RuntimeException("Student not found"));
 
         // Create and save the relationship

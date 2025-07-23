@@ -27,8 +27,8 @@ public class AssignmentSubmissionService {
 
     public AssignmentSubmission submitAssignment(AssignmentSubmission submission) {
         // Decode Base64 solution
-        if (submission.getSolution() == null && submission.getSolutionBase64() != null) {
-            byte[] decodedData = Base64.getDecoder().decode(submission.getSolutionBase64());
+        if (submission.getSolution() == null && submission.getSolution() != null) {
+            byte[] decodedData = Base64.getDecoder().decode(submission.getSolution());
             submission.setSolution(decodedData);
         }
 
@@ -55,4 +55,6 @@ public class AssignmentSubmissionService {
     public Optional<AssignmentSubmission> getSubmissionById(Integer id) {
         return repository.findById(id);
     }
+
+    
 }

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verification Failed</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .error-message {
+            color: #f44336;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .retry-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #d32f2f;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-message">✗ Account verification failed</div>
+    <p id="error-detail"></p>
+    <a href="/register.html" class="retry-link">Try Again</a>
+
+    <script>
+        // Get error message from URL query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get('message');
+        if (message) {
+            document.getElementById('error-detail').textContent = message;
+        }
+    </script>
+</body>
+</html>

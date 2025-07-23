@@ -26,4 +26,9 @@ public class AssignmentService {
     public List<Assignment> getAssignmentsByStatus(String status){
         return repository.getAssignmentsByStatus(status);
     }
+
+    public List<Assignment> findOverdueAssignmentsByStudentId(Integer id){
+    return repository.findOverdueAssignmentsByStudentId(id);
+}
+
 } 

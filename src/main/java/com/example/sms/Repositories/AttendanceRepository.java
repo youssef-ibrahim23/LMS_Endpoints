@@ -48,4 +48,26 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Integer>
             @Param("fromDate") java.sql.Date fromDate,
             @Param("toDate") java.sql.Date toDate);
 
+            @Query(value = """
+    SELECT 
+        status,
+        COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS percentage
+    FROM student_attendances
+    WHERE student_id = :studentId
+    GROUP BY status
+    """, nativeQuery = true)
+List<Map<String, Object>> getAttendancePercentageByStudentId(@Param("studentId") Integer studentId);
+
+@Query(value = """
+    SELECT 
+        COUNT(DISTINCT sa.attendance_id) AS total_days,
+        COUNT(*) FILTER (WHERE sa.status = 'Present') AS present_count,
+        COUNT(*) FILTER (WHERE sa.status = 'Late') AS late_count,
+        COUNT(*) FILTER (WHERE sa.status = 'Absent') AS absent_count
+    FROM student_attendances sa
+    WHERE sa.student_id = :studentId
+    """, nativeQuery = true)
+Map<String, Object> getAttendanceStatsByStudentId(@Param("studentId") Integer studentId);
+
+
 }

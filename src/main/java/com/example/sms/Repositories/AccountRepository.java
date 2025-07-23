@@ -23,11 +23,13 @@ Optional<Account> findActiveAccountByCredentials(
     @Param("email") String email,
     @Param("password") String password);
 
-  boolean existsByUserId(Integer userId);
+  boolean existsByUserUserId(Integer userId);
   @Query(value="""
       UPDATE accounts
       SET password = :pass, last_reset = CURRENT_DATE
       WHERE user_id = :user
       """, nativeQuery=true)
       int changePassword(@Param("pass") String pass, @Param("user") Integer user);
+      
+      Optional<Account> findByEmail(String email);
 }

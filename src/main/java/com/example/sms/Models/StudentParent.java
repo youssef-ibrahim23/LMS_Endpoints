@@ -1,28 +1,45 @@
 package com.example.sms.Models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 @Entity
-@Table(name="students_parents")
+@Table(name = "students_parents")
 public class StudentParent {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name="parent_id")
+    @JoinColumn(name = "parent_id", nullable = false)
     private Parent parent;
 
     @ManyToOne
-    @JoinColumn(name="student_id")
-    private User student;
+    @JoinColumn(name = "student_id", nullable = false)
+    private Student student;
 
+    @Column(name = "relationship", nullable = false)
+    private String relationship;
+
+    // Constructors
+    public StudentParent() {
+    }
+
+    public StudentParent(Parent parent, Student student, String relationship) {
+        this.parent = parent;
+        this.student = student;
+        this.relationship = relationship;
+    }
+
+    public StudentParent(Integer id, Parent parent, Student student, String relationship) {
+        this.id = id;
+        this.parent = parent;
+        this.student = student;
+        this.relationship = relationship;
+    }
+
+    // Getters and Setters
     public Integer getId() {
         return id;
     }
@@ -39,12 +56,30 @@ public class StudentParent {
         this.parent = parent;
     }
 
-    public User getStudent() {
+    public Student getStudent() {
         return student;
     }
 
-    public void setStudent(User student) {
+    public void setStudent(Student student) {
         this.student = student;
     }
-    
+
+    public String getRelationship() {
+        return relationship;
+    }
+
+    public void setRelationship(String relationship) {
+        this.relationship = relationship;
+    }
+
+    // toString
+    @Override
+    public String toString() {
+        return "StudentParent{" +
+                "id=" + id +
+                ", parent=" + (parent != null ? parent.getParentId() : null) +
+                ", student=" + (student != null ? student.getStudentId() : null) +
+                ", relationship='" + relationship + '\'' +
+                '}';
+    }
 }

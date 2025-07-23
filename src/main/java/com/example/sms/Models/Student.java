@@ -11,27 +11,36 @@ public class Student {
     @Column(name = "student_id")
     private Integer studentId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "grade_id", referencedColumnName = "grade_id")
+    @JoinColumn(name = "grade_id")
     private Grade grade;
 
     @ManyToOne
-    @JoinColumn(name = "class_id", referencedColumnName = "class_id")
-    private Classroom classroom;
+    @JoinColumn(name = "class_id")
+    private SchoolClass studentClass;
 
-    public Student(Integer studentId) {
-        this.studentId = studentId;
-    }
-
+    // Constructors
     public Student() {
     }
 
-    // Getters and setters
+    public Student(User user, Grade grade, SchoolClass studentClass) {
+        this.user = user;
+        this.grade = grade;
+        this.studentClass = studentClass;
+    }
 
+    public Student(Integer studentId, User user, Grade grade, SchoolClass studentClass) {
+        this.studentId = studentId;
+        this.user = user;
+        this.grade = grade;
+        this.studentClass = studentClass;
+    }
+
+    // Getters and Setters
     public Integer getStudentId() {
         return studentId;
     }
@@ -56,11 +65,22 @@ public class Student {
         this.grade = grade;
     }
 
-    public Classroom getClassroom() {
-        return classroom;
+    public SchoolClass getStudentClass() {
+        return studentClass;
     }
 
-    public void setClassroom(Classroom classroom) {
-        this.classroom = classroom;
+    public void setStudentClass(SchoolClass studentClass) {
+        this.studentClass = studentClass;
+    }
+
+    // toString
+    @Override
+    public String toString() {
+        return "Student{" +
+                "studentId=" + studentId +
+                ", userId=" + (user != null ? user.getUserId() : null) +
+                ", grade=" + (grade != null ? grade.getGradeName() : null) +
+                ", class=" + (studentClass != null ? studentClass.getClassName() : null) +
+                '}';
     }
 }

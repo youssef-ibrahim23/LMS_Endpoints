@@ -2,8 +2,10 @@ package com.example.sms.DTO;
 
 import java.sql.Date;
 
+import com.example.sms.Models.Role;
+
 public class UserDTO {
-    private Integer roleId;
+    private Role role;
     private String firstName;
     private String middleName;
     private String lastName;
@@ -12,11 +14,11 @@ public class UserDTO {
     private Date birthDate;
     private String phoneNumber;
     private String nationalId;
-    public Integer getRoleId() {
-        return roleId;
+    public Role getRole() {
+        return role;
     }
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setRole(Role role) {
+        this.role = role;
     }
     public String getFirstName() {
         return firstName;

@@ -22,8 +22,6 @@ List<Map<String, Object>> countStudentsByGrade();
             SELECT 
     s.session_id,
     s.session_date,
-    s.start_time,
-    s.end_time,
     s.type,
     sub.subject_name,
     g.grade_name,

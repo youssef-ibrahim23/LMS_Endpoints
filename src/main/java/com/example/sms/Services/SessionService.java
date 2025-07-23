@@ -26,4 +26,9 @@ public class SessionService {
         return sessionRepository.save(session);
     }
 
+    public List<Session> getTodaySessionsByStudentId(Integer id){
+
+     return  sessionRepository.findTodaySessionsByStudentId(id);
+    }
+
 }
