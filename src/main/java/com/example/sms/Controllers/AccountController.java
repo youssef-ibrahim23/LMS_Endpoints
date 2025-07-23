@@ -147,40 +147,6 @@ public class AccountController {
                     .body(ResponseService.createErrorResponse("Failed to process password reset request"));
         }
     }
-
-    @PostMapping("/verify-reset-code")
-    public ResponseEntity<?> verifyResetCode(@RequestBody VerificationCodeRequest request) {
-        try {
-            // Validate inputs
-            if (request.getEmail() == null || request.getEmail().trim().isEmpty()) {
-                throw new IllegalArgumentException("Email is required");
-            }
-            if (request.getCode() == null || request.getCode().trim().isEmpty()) {
-                throw new IllegalArgumentException("Verification code is required");
-            }
-
-            // Verify the code
-            boolean isValid = accountService.verifyResetCode(request.getEmail(), request.getCode());
-
-            Map<String, Object> response = new HashMap<>();
-            response.put("status", "success");
-            response.put("message", "Verification code is valid");
-            response.put("email", request.getEmail());
-            
-            return ResponseEntity.ok(response);
-            
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest()
-                    .body(ResponseService.createErrorResponse(e.getMessage()));
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(ResponseService.createErrorResponse(e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError()
-                    .body(ResponseService.createErrorResponse("Failed to verify reset code"));
-        }
-    }
-
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPasswordWithVerification(@RequestBody PasswordResetRequest request) {
         try {

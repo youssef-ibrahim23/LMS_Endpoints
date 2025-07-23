@@ -228,11 +228,11 @@ public class AccountService {
         return account;
     }
 
-private java.sql.Date calculateExpiryDate(int expiryTimeInMinutes) {
+private java.sql.Timestamp calculateExpiryDate(int expiryTimeInMinutes) {
     Calendar cal = Calendar.getInstance();
     cal.setTime(new java.util.Date());
     cal.add(Calendar.MINUTE, expiryTimeInMinutes);
-    return new java.sql.Date(cal.getTimeInMillis());
+    return new java.sql.Timestamp(cal.getTimeInMillis());
 }
 
     // Retrieve an account by user ID

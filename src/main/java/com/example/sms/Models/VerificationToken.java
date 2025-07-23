@@ -1,7 +1,7 @@
 package com.example.sms.Models;
 
 import jakarta.persistence.*;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "verification_tokens")
@@ -16,7 +16,7 @@ public class VerificationToken {
     @JoinColumn(nullable = false, name = "account")
     private Account account;
     
-    private Date expiryDate;
+    private Timestamp expiryDate;
 
     // Getters and Setters
     public Integer getId() { return id; }
@@ -25,6 +25,6 @@ public class VerificationToken {
     public void setToken(String token) { this.token = token; }
     public Account getAccount() { return account; }
     public void setAccount(Account account) { this.account = account; }
-    public Date getExpiryDate() { return expiryDate; }
-    public void setExpiryDate(Date expiryDate) { this.expiryDate = expiryDate; }
+    public Timestamp getExpiryDate() { return expiryDate; }
+    public void setExpiryDate(Timestamp expiryDate) { this.expiryDate = expiryDate; }
 }
