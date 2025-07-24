@@ -22,7 +22,7 @@ public class Attendance {
     @Column(name = "presents")
     private Integer presents;
     
-    @Column(name = "absence")
+    @Column(name = "absences")
     private Integer absences;
 
     // Getters and Setters

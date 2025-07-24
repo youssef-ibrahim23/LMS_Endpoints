@@ -76,7 +76,7 @@ public class AccountService {
         verificationTokenRepository.save(verificationToken);
 
         // Create verification link
-        String verificationLink = "http://localhost:8080/api/v1/accounts/verify/" + verificationToken.getToken();
+        String verificationLink = "https://lmsendpoints-production.up.railway.app/api/v1/accounts/verify/" + verificationToken.getToken();
 
         // Create email content
         String emailContent = String.format("""

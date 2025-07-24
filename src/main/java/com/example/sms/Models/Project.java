@@ -1,5 +1,7 @@
 package com.example.sms.Models;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -14,12 +16,18 @@ public class Project {
     @Column(name = "project_name", nullable = false)
     private String projectName;
 
+    @Column(name = "description")
+    private String description;
+
     @ManyToOne
     @JoinColumn(name = "team_id", nullable = false)
     private Team team;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "start_date" )
+    private LocalDate startDate;
+
+    @Column(name = "end_date")
+    private LocalDate endDate;
 
     @Column(name = "status", columnDefinition = "varchar(15) default 'InProgress'")
     private String status = "InProgress";
@@ -65,4 +73,22 @@ public class Project {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    
 }

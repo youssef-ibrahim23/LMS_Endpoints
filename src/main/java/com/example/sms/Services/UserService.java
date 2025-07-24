@@ -33,11 +33,11 @@ public class UserService {
     public User createUser(UserDTO userDTO) {
         User user = new User();
 
-        user.setRole(userDTO.getRole()); // RoleType Enum
+        user.setRole(userDTO.getRole()); 
         user.setFirstName(userDTO.getFirstName());
         user.setMiddleName(userDTO.getMiddleName());
         user.setLastName(userDTO.getLastName());
-        user.setGender(userDTO.getGender()); // GenderType Enum
+        user.setGender(userDTO.getGender()); 
         user.setAddress(userDTO.getAddress());
         user.setBirthDate(userDTO.getBirthDate());
         user.setPhoneNumber(userDTO.getPhoneNumber());
